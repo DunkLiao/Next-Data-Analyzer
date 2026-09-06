@@ -82,6 +82,27 @@ function handle(msg: WorkerRequest): void {
         });
         break;
       }
+      case "load-dataset": {
+        workbook = null;
+        rawBuffer = null;
+        activeSheet = null;
+        kind = "text";
+        encoding = null;
+        dataset = msg.dataset;
+        post({
+          reqId: msg.reqId,
+          type: "loaded",
+          info: {
+            kind: "database",
+            encoding,
+            sheets: null,
+            activeSheet: null,
+            rowCount: dataset.rowCount,
+            columnCount: dataset.columnNames.length,
+          },
+        });
+        break;
+      }
       case "select-sheet": {
         const wb = workbook;
         if (!wb) throw new Error("目前沒有載入 Excel 活頁簿");

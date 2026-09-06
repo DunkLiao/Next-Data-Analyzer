@@ -10,6 +10,8 @@ import { renderCorr } from "./ui/corr";
 import { exportHtmlReport, exportStatsCsv } from "./ui/report";
 import { resizeAllCharts } from "./ui/charts";
 import { el, fmtInt, toast } from "./ui/dom";
+import { openDatabasePanel } from "./ui/database";
+import { queryResultToDataset, type DatabaseQueryResult } from "./io/database";
 import sampleUtf8Url from "./assets/samples/sample-utf8.csv?url";
 import sampleBig5Url from "./assets/samples/sample-big5.csv?url";
 
@@ -177,6 +179,19 @@ async function pasteFromClipboard(): Promise<void> {
   });
 }
 
+async function loadDatabaseResult(result: DatabaseQueryResult): Promise<void> {
+  const dataset = queryResultToDataset(result);
+  await withBusy(async () => {
+    state.loadInfo = await state.client.loadDataset(dataset);
+    state.source = result.sourceLabel;
+    await runAnalysis();
+    updateHeaderInfo();
+    activeTab = "overview";
+    syncTabButtons();
+    toast(`已載入資料庫查詢結果（${fmtInt(state.result!.rowCount)} 列）`);
+  });
+}
+
 async function loadSample(url: string, name: string, kind: "csv" | "excel"): Promise<void> {
   await withBusy(async () => {
     toast(`正在載入範例 ${name}…`);
@@ -210,6 +225,8 @@ function wireEvents(): void {
   $("btn-open-2").addEventListener("click", () => void openFile());
   $("btn-paste").addEventListener("click", () => void pasteFromClipboard());
   $("btn-paste-2").addEventListener("click", () => void pasteFromClipboard());
+  $("btn-database").addEventListener("click", () => void openDatabasePanel({ onLoadDataset: loadDatabaseResult }));
+  $("btn-database-2").addEventListener("click", () => void openDatabasePanel({ onLoadDataset: loadDatabaseResult }));
   $("btn-sample-utf8").addEventListener("click", () => void loadSample(sampleUtf8Url, "sample-utf8.csv", "csv"));
   $("btn-sample-big5").addEventListener("click", () => void loadSample(sampleBig5Url, "sample-big5.csv", "csv"));
   $("btn-settings").addEventListener("click", openSettings);

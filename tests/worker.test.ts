@@ -65,6 +65,41 @@ describe("worker message contract", () => {
     expect(send({ reqId: 4, type: "redecode", encoding: "big5" })).toMatchObject({ type: "error", message: "只有 CSV 檔案可以重新選擇編碼" });
   });
 
+  it("loads database query results as a dataset for analysis and pagination", () => {
+    const loaded = send({
+      reqId: 1,
+      type: "load-dataset",
+      dataset: {
+        name: "資料庫：銷售查詢",
+        columnNames: ["customer", "amount", "closed_at"],
+        columns: [
+          ["A", "B", "C"],
+          ["1200.5", "", "900"],
+          ["2026-09-01", "2026-09-02", ""],
+        ],
+        rowCount: 3,
+      },
+    });
+    expect(loaded).toMatchObject({
+      type: "loaded",
+      info: { kind: "database", encoding: null, sheets: null, activeSheet: null, rowCount: 3, columnCount: 3 },
+    });
+    const result = send({ reqId: 2, type: "analyze", options: { ...DEFAULT_OPTIONS, previewRows: 2 } });
+    expect(result.type).toBe("result");
+    if (result.type !== "result") throw new Error("Expected analysis result");
+    expect(result.result.datasetName).toBe("資料庫：銷售查詢");
+    expect(result.result.columns[1].type).toBe("number");
+    expect(result.result.preview).toEqual([
+      ["A", "1200.5", "2026-09-01"],
+      ["B", "", "2026-09-02"],
+    ]);
+    expect(send({ reqId: 3, type: "rows", offset: 2, limit: 2 })).toMatchObject({
+      type: "rows-result",
+      rows: [["C", "900", ""]],
+      totalRows: 3,
+    });
+  });
+
   it("reports errors before any data is loaded", () => {
     expect(send({ reqId: 9, type: "analyze", options: DEFAULT_OPTIONS })).toEqual({ reqId: 9, type: "error", message: "尚未載入資料" });
   });

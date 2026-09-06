@@ -539,6 +539,136 @@ h3 {
   margin-top: 14px;
 }
 
+.database-modal {
+  width: min(1180px, 94vw);
+  max-height: 88vh;
+  overflow: auto;
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.database-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.database-section {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  background: #fff;
+}
+
+.database-section h3 {
+  margin-top: 0;
+}
+
+.profile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 9px 10px;
+  background: var(--panel);
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.profile-item.active,
+.profile-item:hover {
+  border-color: var(--primary);
+  background: #f8f9ff;
+}
+
+.database-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--panel);
+}
+
+.input[readonly] {
+  background: #f8f9fb;
+}
+
+.inline-field {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.inline-field .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.query-area textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.params-scroll {
+  max-height: 220px;
+}
+
+.param-table input,
+.param-table select {
+  min-width: 120px;
+}
+
+.query-preview {
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .database-grid,
+  .database-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 body.busy {
   cursor: wait;
 }

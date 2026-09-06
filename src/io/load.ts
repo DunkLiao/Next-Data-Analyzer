@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { LoadInfo, WorkerRequest, WorkerResponse } from "../core/types";
+import type { Dataset, LoadInfo, WorkerRequest, WorkerResponse } from "../core/types";
 import AnalyzeWorker from "../worker/analyze.worker.ts?worker";
 
 type Pending = { resolve: (v: WorkerResponse) => void; reject: (e: Error) => void };
@@ -53,6 +53,11 @@ export class AnalyzerClient {
 
   async loadText(text: string, fileName: string): Promise<LoadInfo> {
     const res = await this.call({ type: "load-text", text, fileName });
+    return (res as Extract<WorkerResponse, { type: "loaded" }>).info;
+  }
+
+  async loadDataset(dataset: Dataset): Promise<LoadInfo> {
+    const res = await this.call({ type: "load-dataset", dataset });
     return (res as Extract<WorkerResponse, { type: "loaded" }>).info;
   }
 

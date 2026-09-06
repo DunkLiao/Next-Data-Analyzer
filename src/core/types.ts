@@ -128,6 +128,7 @@ export const DEFAULT_OPTIONS: AnalyzeOptions = {
 export type WorkerRequest =
   | { reqId: number; type: "load"; buffer: ArrayBuffer; fileName: string; kind: "csv" | "excel" }
   | { reqId: number; type: "load-text"; text: string; fileName: string }
+  | { reqId: number; type: "load-dataset"; dataset: Dataset }
   | { reqId: number; type: "select-sheet"; sheet: string }
   | { reqId: number; type: "redecode"; encoding: string }
   | { reqId: number; type: "analyze"; options: AnalyzeOptions }
@@ -135,7 +136,7 @@ export type WorkerRequest =
   | { reqId: number; type: "rows"; offset: number; limit: number };
 
 export interface LoadInfo {
-  kind: "csv" | "excel" | "text";
+  kind: "csv" | "excel" | "text" | "database";
   encoding: string | null;
   sheets: string[] | null;
   activeSheet: string | null;
