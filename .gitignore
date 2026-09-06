@@ -1,0 +1,47 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+
+# Frontend build output
+dist/
+dist-ssr/
+.vite/
+
+# Test and coverage output
+coverage/
+test-results/
+playwright-report/
+
+# Local environment overrides
+*.local
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Rust / Tauri generated output
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# Temporary files
+*.tmp
+*.temp
+Thumbs.db

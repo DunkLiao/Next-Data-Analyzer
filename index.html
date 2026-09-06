@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Next Data Analyzer</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">▦</span>
+        <span class="brand-name">Next Data Analyzer</span>
+      </div>
+      <div id="dataset-info" class="dataset-info"></div>
+      <div class="actions">
+        <select id="sheet-select" class="select" hidden title="選擇工作表"></select>
+        <select id="encoding-select" class="select" hidden title="重新選擇編碼">
+          <option value="">重新解碼…</option>
+          <option value="utf-8">UTF-8</option>
+          <option value="big5">Big5</option>
+        </select>
+        <button id="btn-open" class="btn primary">開啟檔案</button>
+        <button id="btn-paste" class="btn">剪貼簿貼上</button>
+        <button id="btn-settings" class="btn">缺失值設定</button>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button data-tab="overview" class="active">總覽</button>
+      <button data-tab="missing">缺失值</button>
+      <button data-tab="dist">分布</button>
+      <button data-tab="corr">相關性</button>
+      <button data-tab="report">報告</button>
+    </nav>
+
+    <main>
+      <section id="welcome">
+        <div class="welcome-card">
+          <h1>歡迎使用 Next Data Analyzer</h1>
+          <p class="muted">
+            載入 CSV / TSV / Excel 檔案，或直接從 Excel 複製後貼上，即可檢視缺失值與各種分布狀況。<br />
+            所有分析都在本機完成，資料不會上傳。
+          </p>
+          <div class="welcome-actions">
+            <button id="btn-open-2" class="btn primary big">開啟檔案</button>
+            <button id="btn-paste-2" class="btn big">剪貼簿貼上</button>
+          </div>
+          <p class="muted small">或試用內建範例：</p>
+          <div class="welcome-actions">
+            <button id="btn-sample-utf8" class="btn small">範例：銷售資料（UTF-8）</button>
+            <button id="btn-sample-big5" class="btn small">範例：員工資料（Big5）</button>
+          </div>
+        </div>
+      </section>
+      <section id="tab-overview" class="tab-panel" hidden></section>
+      <section id="tab-missing" class="tab-panel" hidden></section>
+      <section id="tab-dist" class="tab-panel" hidden></section>
+      <section id="tab-corr" class="tab-panel" hidden></section>
+      <section id="tab-report" class="tab-panel" hidden></section>
+    </main>
+
+    <div id="modal" class="modal-backdrop" hidden>
+      <div class="modal">
+        <h2>缺失值設定</h2>
+        <p class="muted">
+          以下值（不分大小寫、去除前後空白）會被視為缺失。空白值一律視為缺失。<br />
+          每行一個，或以逗號分隔。
+        </p>
+        <textarea id="tokens-input" rows="8" spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <button id="modal-cancel" class="btn">取消</button>
+          <button id="modal-save" class="btn primary">儲存並重新分析</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </body>
+</html>
